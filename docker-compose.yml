@@ -1,50 +1,90 @@
 version: '3.3'
 
-networks:
-  etcd_registrator:
-    ipam:
-      config:
-        - subnet: 10.0.0.0/16
-
 services:
   etcd:
+    container_name: etcd-170
     image: "quay.io/coreos/etcd:v3.3"
     environment:
-      ETCD_ADVERTISE_CLIENT_URLS: "http://10.0.0.2:2379"
+      ETCD_NAME: etcd-170
+      ETCD_ADVERTISE_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: "http://$ETCD_IP:2380"
+      ETCD_LISTEN_PEER_URLS: "http://0.0.0.0:2380"
+      ETCD_INITIAL_CLUSTER_TOKEN: txin2018
+      ETCD_INITIAL_CLUSTER: etcd-33=http://$ETCD_NODE2_IP:2380,etcd-21=http://$ETCD_NODE1_IP:2380,etcd-170=http://$ETCD_IP:2380
+      ETCD_INITIAL_CLUSTER_TOKEN_STATE: new
       ETCDCTL_API: "3"
-      SERVICE_2379_NAME: "etcd"
-    volumes: 
+      SERVICE_2379_NAME: "etcd-170"
+    volumes:
       - ./default.etcd:/default.etcd
     ports:
     - 2379:2379
     - 2380:2380
     - 4001:4001
-    networks:
-      etcd_registrator:
-        ipv4_address: 10.0.0.2
 
-  # Registrator to register containers with Etcd  
+  etcd_node1:
+    container_name: etcd-21
+    image: "quay.io/coreos/etcd:v3.3"
+    environment:
+      ETCD_ADVERTISE_CLIENT_URLS: "http://0.0.0.0:2379"
+      ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: "http://$ETCD_NODE1_IP:2380"
+      ETCD_LISTEN_PEER_URLS: "http://0.0.0.0:2380"
+      ETCD_INITIAL_CLUSTER_TOKEN: txin2018
+      ETCD_INITIAL_CLUSTER: etcd-33=http://$ETCD_NODE2_IP:2380,etcd-21=http://$ETCD_NODE1_IP:2380,etcd-170=http://$ETCD_IP:2380
+      ETCD_INITIAL_CLUSTER_TOKEN_STATE: new
+      ETCDCTL_API: "3"
+      SERVICE_2379_NAME: "etcd-21"
+    volumes:
+      - ./default.etcd:/default.etcd
+    ports:
+    - 2379:2379
+    - 2380:2380
+    - 4001:4001
+
+  etcd_node2:
+    container_name: etcd-33
+    image: "quay.io/coreos/etcd:v3.3"
+    environment:
+      ETCD_ADVERTISE_CLIENT_URLS: "http://0.0.0.0:2379"
+      ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: "http://$ETCD_NODE2_IP:2380"
+      ETCD_LISTEN_PEER_URLS: "http://0.0.0.0:2380"
+      ETCD_INITIAL_CLUSTER_TOKEN: txin2018
+      ETCD_INITIAL_CLUSTER: etcd-33=http://$ETCD_NODE2_IP:2380,etcd-21=http://$ETCD_NODE1_IP:2380,etcd-170=http://$ETCD_IP:2380
+      ETCD_INITIAL_CLUSTER_TOKEN_STATE: new
+      ETCDCTL_API: "3"
+      SERVICE_2379_NAME: "etcd-21"
+    volumes:
+      - ./default.etcd:/default.etcd
+    ports:
+    - 2379:2379
+    - 2380:2380
+    - 4001:4001
+
   registrator:
     image: gliderlabs/registrator:latest
     # Tell registrator where the etcd HTTP API is and to use 
     # the docker VM's IP
-    command: [ -ip, "10.0.0.2", "etcd://etcd:2379/trunk/services" ]
+    command: [ -ip, "$ETCD_IP", "etcd://$ETCD_IP:2379/trunk/services" ]
     volumes:
     # So registrator can use the docker API to inspect containers
     - "/var/run/docker.sock:/tmp/docker.sock"
-    depends_on:
-    - etcd
-    networks:
-      etcd_registrator:
-        ipv4_address: 10.0.0.3
 
-#  # Registrator to register containers with Etcd
-#  registrator170:
-#    image: gliderlabs/registrator:latest
-#    # Tell registrator where the etcd HTTP API is and to use
-#    # the docker VM's IP
-#    command: [ -ip, "192.168.3.170", "etcd://192.168.3.170:2379/localtest/services" ]
-#    volumes:
-#    # So registrator can use the docker API to inspect containers
-#    - "/var/run/docker.sock:/tmp/docker.sock"
+  registrator_node1:
+    image: gliderlabs/registrator:latest
+    # Tell registrator where the etcd HTTP API is and to use
+    # the docker VM's IP
+    command: [ -ip, "$ETCD_NODE1_IP", "etcd://$ETCD_NODE1_IP:2379/trunk/services" ]
+    volumes:
+    # So registrator can use the docker API to inspect containers
+    - "/var/run/docker.sock:/tmp/docker.sock"
+
+  registrator_node2:
+    image: gliderlabs/registrator:latest
+    # Tell registrator where the etcd HTTP API is and to use
+    # the docker VM's IP
+    command: [ -ip, "$ETCD_NODE2_IP", "etcd://$ETCD_NODE2_IP:2379/trunk/services" ]
+    volumes:
+    # So registrator can use the docker API to inspect containers
+    - "/var/run/docker.sock:/tmp/docker.sock"
