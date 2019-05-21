@@ -2,7 +2,7 @@ version: '3.3'
 
 networks:
   etcd_registrator:
-    driver: overlay
+    driver: bridge
 
 services:
   etcd:
@@ -24,9 +24,6 @@ services:
     - 2380:2380
     networks:
       - etcd_registrator
-    deploy:
-      placement:
-        constraints: [node.role == manager]
 
   etcd_node1:
     container_name: etcd-21
@@ -46,9 +43,6 @@ services:
     - 2380:2380
     networks:
       - etcd_registrator
-    deploy:
-      placement:
-        constraints: [node.labels.nodename == node1]
 
   etcd_node2:
     container_name: etcd-33
@@ -68,9 +62,6 @@ services:
     - 2380:2380
     networks:
       - etcd_registrator
-    deploy:
-      placement:
-        constraints: [node.labels.nodename == node2]
 
   registrator:
     image: gliderlabs/registrator:latest
