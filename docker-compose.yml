@@ -26,6 +26,7 @@ services:
     container_name: etcd-21
     image: "quay.io/coreos/etcd:v3.3"
     environment:
+      ETCD_NAME: etcd-21
       ETCD_ADVERTISE_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCD_INITIAL_ADVERTISE_PEER_URLS: "http://$ETCD_NODE1_IP:2380"
@@ -46,6 +47,7 @@ services:
     container_name: etcd-33
     image: "quay.io/coreos/etcd:v3.3"
     environment:
+      ETCD_NAME: etcd-33
       ETCD_ADVERTISE_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCD_INITIAL_ADVERTISE_PEER_URLS: "http://$ETCD_NODE2_IP:2380"
