@@ -10,10 +10,12 @@ SERVICE_NAME = 'test_service'
 try:
     client.read(SERVICE_PATH)
 
-    directory = client.get(SERVICE_PATH + SERVICE_NAME)
+    req_path = SERVICE_PATH + SERVICE_NAME
+
+    directory = client.get(req_path)
     if directory and directory.children:
         for obj in directory.children:
             print(str(obj.key) + ': ' + str(obj.value))
 
 except etcd.EtcdKeyNotFound:
-    print('SERVICE_PATH: ' + SERVICE_PATH + ' read error!')
+    print('SERVICE_PATH: ' + req_path + ' read error!')
