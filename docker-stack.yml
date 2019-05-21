@@ -28,7 +28,7 @@ services:
     image: gliderlabs/registrator:latest
     # Tell registrator where the etcd HTTP API is and to use 
     # the docker VM's IP
-    command: [ -ip, "$ETCD_IP", "etcd://etcd:2379/trunk/services" ]
+    command: [ -ip, "$ETCD_IP", "etcd://$ETCD_IP:2379/trunk/services" ]
     volumes:
     # So registrator can use the docker API to inspect containers
     - "/var/run/docker.sock:/tmp/docker.sock"
