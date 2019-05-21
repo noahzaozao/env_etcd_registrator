@@ -22,8 +22,8 @@ services:
     - 2380:2380
     - 4001:4001
     networks:
-      etcd_registrator:
-        ipv4_address: 10.0.0.2
+      - etcd_registrator:
+          ipv4_address: 10.0.0.2
     deploy:
       mode: replicated
       replicas: 1
@@ -41,7 +41,7 @@ services:
     depends_on:
     - etcd
     networks:
-      etcd_registrator
+      - etcd_registrator
     deploy:
       mode: replicated
       replicas: 1
