@@ -15,9 +15,12 @@ services:
       ETCD_INITIAL_CLUSTER_TOKEN_STATE: new
       ETCDCTL_API: "3"
       SERVICE_2379_NAME: "etcd-170"
+    volumes:
+      - ./default.etcd:/default.etcd
     ports:
     - 2379:2379
     - 2380:2380
+    - 4001:4001
 
   etcd_node1:
     container_name: etcd-21
