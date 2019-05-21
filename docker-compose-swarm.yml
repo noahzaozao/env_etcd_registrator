@@ -35,6 +35,8 @@ services:
       ETCD_INITIAL_CLUSTER_TOKEN_STATE: new
       ETCDCTL_API: "3"
       SERVICE_2379_NAME: "etcd-21"
+      volumes:
+        - ./default.etcd:/default.etcd
     ports:
     - 2379:2379
     - 2380:2380
@@ -53,6 +55,8 @@ services:
       ETCD_INITIAL_CLUSTER_TOKEN_STATE: new
       ETCDCTL_API: "3"
       SERVICE_2379_NAME: "etcd-21"
+      volumes:
+        - ./default.etcd:/default.etcd
     ports:
     - 2379:2379
     - 2380:2380
