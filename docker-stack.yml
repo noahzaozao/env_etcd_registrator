@@ -3,15 +3,12 @@ version: '3.3'
 networks:
   etcd_registrator:
     driver: overlay
-    ipam:
-      config:
-        - subnet: 10.0.0.0/16
 
 services:
   etcd:
     image: "quay.io/coreos/etcd:v3.3"
     environment:
-      ETCD_ADVERTISE_CLIENT_URLS: "http://10.0.0.2:2379"
+      ETCD_ADVERTISE_CLIENT_URLS: "http://$ETCD_IP:2379"
       ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCDCTL_API: "3"
       SERVICE_2379_NAME: "etcd"
@@ -22,8 +19,7 @@ services:
     - 2380:2380
     - 4001:4001
     networks:
-      - etcd_registrator:
-          ipv4_address: 10.0.0.2
+      - etcd_registrator
     deploy:
       mode: replicated
       replicas: 1
@@ -34,7 +30,7 @@ services:
     image: gliderlabs/registrator:latest
     # Tell registrator where the etcd HTTP API is and to use 
     # the docker VM's IP
-    command: [ -ip, "10.0.0.2", "etcd://etcd:2379/trunk/services" ]
+    command: [ -ip, "$ETCD_IP", "etcd://etcd:2379/trunk/services" ]
     volumes:
     # So registrator can use the docker API to inspect containers
     - "/var/run/docker.sock:/tmp/docker.sock"
