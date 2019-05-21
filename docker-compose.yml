@@ -65,6 +65,7 @@ services:
     - 4001:4001
 
   registrator:
+    container_name: registrator-170
     image: gliderlabs/registrator:latest
     # Tell registrator where the etcd HTTP API is and to use 
     # the docker VM's IP
@@ -74,6 +75,7 @@ services:
     - "/var/run/docker.sock:/tmp/docker.sock"
 
   registrator_node1:
+    container_name: registrator-33
     image: gliderlabs/registrator:latest
     # Tell registrator where the etcd HTTP API is and to use
     # the docker VM's IP
@@ -83,6 +85,7 @@ services:
     - "/var/run/docker.sock:/tmp/docker.sock"
 
   registrator_node2:
+    container_name: registrator-33
     image: gliderlabs/registrator:latest
     # Tell registrator where the etcd HTTP API is and to use
     # the docker VM's IP
