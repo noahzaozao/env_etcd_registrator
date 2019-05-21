@@ -19,8 +19,9 @@ services:
     networks:
       - etcd_registrator
     deploy:
-      mode: replicated
-      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
 
   registrator:
     image: gliderlabs/registrator:latest
