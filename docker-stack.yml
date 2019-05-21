@@ -12,8 +12,6 @@ services:
       ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCDCTL_API: "3"
       SERVICE_2379_NAME: "etcd"
-    volumes: 
-      - ./default.etcd:/default.etcd
     ports:
     - 2379:2379
     - 2380:2380
