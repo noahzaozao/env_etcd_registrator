@@ -6,8 +6,8 @@ services:
     image: "quay.io/coreos/etcd:v3.3"
     environment:
       ETCD_NAME: etcd-170
-      ETCD_ADVERTISE_CLIENT_URLS: "http://0.0.0.0:2379"
-      ETCD_LISTEN_CLIENT_URLS: "http://$ETCD_IP:2379,http://127.0.0.1:2379"
+      ETCD_ADVERTISE_CLIENT_URLS: "http://$ETCD_IP:2379,http://0.0.0.0:2379"
+      ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCD_INITIAL_ADVERTISE_PEER_URLS: "http://$ETCD_IP:2380"
       ETCD_LISTEN_PEER_URLS: "http://0.0.0.0:2380"
       ETCD_INITIAL_CLUSTER_TOKEN: txin2018
@@ -27,8 +27,8 @@ services:
     image: "quay.io/coreos/etcd:v3.3"
     environment:
       ETCD_NAME: etcd-21
-      ETCD_ADVERTISE_CLIENT_URLS: "http://0.0.0.0:2379"
-      ETCD_LISTEN_CLIENT_URLS: "http://$ETCD_NODE1_IP:2379,http://127.0.0.1:2379"
+      ETCD_ADVERTISE_CLIENT_URLS: "http://$ETCD_NODE1_IP:2379,http://0.0.0.0:2379"
+      ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCD_INITIAL_ADVERTISE_PEER_URLS: "http://$ETCD_NODE1_IP:2380"
       ETCD_LISTEN_PEER_URLS: "http://0.0.0.0:2380"
       ETCD_INITIAL_CLUSTER_TOKEN: txin2018
@@ -48,8 +48,8 @@ services:
     image: "quay.io/coreos/etcd:v3.3"
     environment:
       ETCD_NAME: etcd-33
-      ETCD_ADVERTISE_CLIENT_URLS: "http://0.0.0.0:2379"
-      ETCD_LISTEN_CLIENT_URLS: "http://$ETCD_NODE2_IP:2379,http://127.0.0.1:2379"
+      ETCD_ADVERTISE_CLIENT_URLS: "http://$ETCD_NODE2_IP:2379,http://0.0.0.0:2379"
+      ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCD_INITIAL_ADVERTISE_PEER_URLS: "http://$ETCD_NODE2_IP:2380"
       ETCD_LISTEN_PEER_URLS: "http://0.0.0.0:2380"
       ETCD_INITIAL_CLUSTER_TOKEN: txin2018
