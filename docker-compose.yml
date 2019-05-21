@@ -38,3 +38,13 @@ services:
     networks:
       etcd_registrator:
         ipv4_address: 10.0.0.3
+
+#  # Registrator to register containers with Etcd
+#  registrator170:
+#    image: gliderlabs/registrator:latest
+#    # Tell registrator where the etcd HTTP API is and to use
+#    # the docker VM's IP
+#    command: [ -ip, "192.168.3.170", "etcd://192.168.3.170:2379/localtest/services" ]
+#    volumes:
+#    # So registrator can use the docker API to inspect containers
+#    - "/var/run/docker.sock:/tmp/docker.sock"
